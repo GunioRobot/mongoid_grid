@@ -10,17 +10,16 @@ module Rack
     def initialize(app, options = {})
       opts = {}
       options.each { |k,v|  opts[k.to_s] = v }
-      options = {
-        'host'    => 'localhost',
-        'prefix'  => 'grid',
-        'port'    => Mongo::Connection::DEFAULT_PORT
-      }.merge(opts)
-
+      options = opts
+      
+      config = YAML.load_file("#{Rails.root}/config/mongoid.yml")[Rails.env] if Rails
+      config ||= {}
+      
       @app        = app
-      @host       = options['host']
-      @port       = options['port']
-      @database   = options['database']
-      @prefix     = options['prefix']
+      @host       = options['host'] || config['host'] || 'localhost'
+      @port       = options['port'] || Mongo::Connection::DEFAULT_PORT
+      @database   = options['database'] || config['database']
+      @prefix     = options['prefix'] || 'grid'
       @username   = options['username']
       @password   = options['password']
       @db         = options['db']

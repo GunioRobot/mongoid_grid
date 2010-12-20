@@ -120,7 +120,7 @@ module Mongoid
           mime = type ? type.content_type : "application/octet-stream"
           send("#{name}_id=",   BSON::ObjectId.new)
           send("#{name}_name=", filename)
-          send("#{name}_size=", File.size(file))
+          send("#{name}_size=", file.size)
           send("#{name}_type=", mime)
           create_attachment_queue[name] = file
         end

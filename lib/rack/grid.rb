@@ -11,10 +11,10 @@ module Rack
       opts = {}
       options.each { |k,v|  opts[k.to_s] = v }
       options = opts
-      
+
       config = YAML.load_file("#{Rails.root}/config/mongoid.yml")[Rails.env] if Rails
       config ||= {}
-      
+
       @app        = app
       @host       = options['host'] || config['host'] || 'localhost'
       @port       = options['port'] || Mongo::Connection::DEFAULT_PORT
